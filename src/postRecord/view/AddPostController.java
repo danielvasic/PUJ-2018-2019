@@ -66,14 +66,12 @@ public class AddPostController implements Initializable {
         }
      try {
             PreparedStatement stmnt = Baza.DB.konekcija.prepareStatement(
-                    "INSERT INTO addpost VALUES (null, ?, ?, ?, ?, ?)",
+                    "INSERT INTO paket VALUES (null, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             );
-            stmnt.setString(1, naziv);
-            stmnt.setString(2, price);
-            stmnt.setString(3, amount);
-            stmnt.setString(4, coupon);
-            stmnt.setString(5, shipping);
+            stmnt.setString(1, amount);
+            stmnt.setString(2, coupon);
+            stmnt.setString(3, shipping);
             stmnt.executeUpdate();
 
             ResultSet generatedKeys = stmnt.getGeneratedKeys();
@@ -83,8 +81,23 @@ public class AddPostController implements Initializable {
             System.out.println("Greska prilikom stvaranja korisnika u bazi:"
                     + e.getMessage());
         }
+     
+     try {
+    PreparedStatement stmnt2 = Baza.DB.konekcija.prepareStatement(
+                    "INSERT INTO proizvod VALUES (null, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
+            );
+            stmnt2.setString(1, naziv);
+            stmnt2.setString(2, price);
+            stmnt2.executeUpdate();
+    } catch (SQLException e) {
+            System.out.println("Greska prilikom stvaranja korisnika2 u bazi:"
+                    + e.getMessage());
+        }
     }
 
+    
+    
     @FXML
     private void odustani(ActionEvent event) {
          Stage stage = (Stage) odustani.getScene().getWindow();

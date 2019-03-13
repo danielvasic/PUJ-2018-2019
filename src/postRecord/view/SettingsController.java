@@ -4,11 +4,14 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
+import static postRecord.model.Baza.DB;
 
 
 public class SettingsController implements Initializable {
@@ -26,18 +29,22 @@ public class SettingsController implements Initializable {
 
     @FXML
     private void handleSaveButtonAction(ActionEvent event){
-        String uname = username.getText();
-        String pass = password.getText();
+        //System.out.println(String.valueOf(preferences.getPassword()));
+        //String lozinka=new String();
+        //lozinka= preferences.getPassword();
         
-        
-        preferences.setPassword(pass);
-        preferences.setUsername(uname);
+        try {
+        PreparedStatement upit = DB.exec("UPDATE korisnik SET lozinka=? WHERE lozinka=?");
+        upit.setString(1, password.getText());
+        //upit.setString(2, preferences.getPassword());
+        upit.executeUpdate();
+        } catch (SQLException ex) {
+        System.out.println("Greška prilikom spremanja lozinke u bazu:" + ex.getMessage());
+        }
         
     }
     
     private void initDefaultValues() {
-        username.setText(String.valueOf(preferences.getUsername()));
-        password.setText(String.valueOf(preferences.getPassword()));
     }
 
     @FXML

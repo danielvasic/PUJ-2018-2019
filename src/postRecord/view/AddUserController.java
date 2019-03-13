@@ -31,19 +31,11 @@ public class AddUserController implements Initializable {
     @FXML
     private JFXTextField ime;
     @FXML
-    private JFXTextField prezime;
-    @FXML
-    private JFXTextField adresa;
-    @FXML
-    private JFXTextField brojMob;
-    @FXML
-    private JFXTextField grad;
+    private JFXPasswordField lozinka;
     @FXML
     private JFXButton saveButton;
     @FXML
     private JFXButton cancelButton;
-    @FXML
-    private JFXPasswordField lozinka;
 
     /**
      * Initializes the controller class.
@@ -55,14 +47,11 @@ public class AddUserController implements Initializable {
 
     @FXML
     private void addUser(ActionEvent event) {
-             String name = ime.getText();
-        String lastname = prezime.getText();
+        String name = ime.getText();
         String password = lozinka.getText();
-        String address = adresa.getText();
-        String phoneNumber = brojMob.getText();
-        String city = grad.getText();
         
-        if(name.isEmpty()||lastname.isEmpty()||address.isEmpty()||phoneNumber.isEmpty()||city.isEmpty()||password.isEmpty()){
+        
+        if(name.isEmpty()||password.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("Molimo popunite sva polja");
@@ -71,15 +60,13 @@ public class AddUserController implements Initializable {
         }
         try {
             PreparedStatement stmnt = Baza.DB.konekcija.prepareStatement(
-                    "INSERT INTO adduser VALUES (null, ?, ?, ?, ?, ?, ?)",
+                    "INSERT INTO korisnik VALUES (null, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             );
             stmnt.setString(1, name);
-            stmnt.setString(2, lastname);
-            stmnt.setString(3, password);
-            stmnt.setString(4, address);
-            stmnt.setString(5, phoneNumber);
-            stmnt.setString(6, city);
+            stmnt.setString(2, password);
+            stmnt.setString(3, "");
+            stmnt.setString(4, "2");
             stmnt.executeUpdate();
 
             ResultSet generatedKeys = stmnt.getGeneratedKeys();

@@ -34,6 +34,8 @@ public class LoginController implements Initializable {
     
     @FXML
     private Label titleLabel;
+    @FXML
+    private JFXTextField role;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -47,6 +49,7 @@ public class LoginController implements Initializable {
         
         String korisnikString = this.username.getText();
         String lozinkaString = this.password.getText();
+        String role = this.role.getText();
         if (korisnikString.equals("") && lozinkaString.equals("")) {
             titleLabel.setText("Greška: Molimo unesite korisničko ime i lozinku.");
             titleLabel.setStyle("-fx-background-color:#d32f2f; -fx-text-fill:white");
@@ -59,16 +62,24 @@ public class LoginController implements Initializable {
             titleLabel.setStyle("-fx-background-color:#d32f2f; -fx-text-fill:white");
         } else {
             try {
-                PreparedStatement upit = DB.prepare("SELECT * FROM adduser WHERE ime=? and lozinka=?");
+                PreparedStatement upit = DB.prepare("SELECT * FROM korisnik WHERE ime=? and sifra=? and uloga_fk=?");
                 upit.setString(1, korisnikString);
                 upit.setString(2, lozinkaString);
+                upit.setString(3, role);
                 ResultSet rs = upit.executeQuery();
                 if (!rs.isBeforeFirst()) {
                     titleLabel.setText("Greška: Korisničko ime i lozinka nisu ispravni.");
                     titleLabel.setStyle("-fx-background-color:#d32f2f; -fx-text-fill:white");
                 } else {
-                    closeStage();
-                    loadMain();
+                    
+                    if("1".equals(role)){
+                        closeStage();
+                        loadAdmin();
+                    }
+                    else if("2".equals(role)){
+                        closeStage();
+                        loadUser();
+                    }
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,7 +96,19 @@ public class LoginController implements Initializable {
         ((Stage)username.getScene().getWindow()).close();
     }
     
-    void loadMain(){
+    void loadAdmin(){
+        try{
+            Parent parent = FXMLLoader.load(getClass().getResource("Admin.fxml"));
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setTitle("Pregled pošte");
+            stage.setScene(new Scene(parent));
+            stage.show();
+        }catch(IOException ex){
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE,null,ex);
+        }
+    }
+    
+    void loadUser(){
         try{
             Parent parent = FXMLLoader.load(getClass().getResource("Main.fxml"));
             Stage stage = new Stage(StageStyle.DECORATED);

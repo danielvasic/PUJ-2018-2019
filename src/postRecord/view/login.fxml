@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="295.0" prefWidth="342.0" stylesheets="@AddUser.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="postRecord.view.LoginController">
+<AnchorPane id="AnchorPane" prefHeight="379.0" prefWidth="342.0" stylesheets="@AddUser.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="postRecord.view.LoginController">
    <children>
       <Label fx:id="titleLabel" alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="48.0" prefWidth="342.0" style="-fx-text-fill: white; -fx-background-color: black;" text="Prijava" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <font>
@@ -24,8 +24,13 @@
             <Font size="15.0" />
          </font>
       </JFXPasswordField>
-      <JFXButton layoutX="65.0" layoutY="185.0" onAction="#handleLoginButtonAction" prefHeight="37.0" prefWidth="73.0" text="Prijavi se" />
-      <JFXButton layoutX="202.0" layoutY="185.0" onAction="#handleCancelButtonAction" prefHeight="37.0" prefWidth="73.0" text="Odustani" />
-      <JFXButton layoutX="65.0" layoutY="234.0" onAction="#handleRegisterButtonAction" prefHeight="37.0" prefWidth="213.0" ripplerFill="BLACK" style="-fx-background-color: green;" text="Registriraj se" />
+      <JFXTextField fx:id="role" labelFloat="true" layoutX="41.0" layoutY="190.0" maxWidth="261.0" minWidth="261.0" prefHeight="31.0" prefWidth="261.0" promptText="Unesite 1 za admina ili 2 za korisnika">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </JFXTextField>
+      <JFXButton layoutX="65.0" layoutY="241.0" onAction="#handleLoginButtonAction" prefHeight="37.0" prefWidth="73.0" text="Prijavi se" />
+      <JFXButton layoutX="205.0" layoutY="241.0" onAction="#handleCancelButtonAction" prefHeight="37.0" prefWidth="73.0" text="Odustani" />
+      <JFXButton layoutX="65.0" layoutY="313.0" onAction="#handleRegisterButtonAction" prefHeight="37.0" prefWidth="213.0" ripplerFill="BLACK" style="-fx-background-color: green;" text="Registriraj se" />
    </children>
 </AnchorPane>
