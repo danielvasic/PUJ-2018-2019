@@ -63,6 +63,8 @@ public class ListPostController implements Initializable {
     @FXML
     private JFXTextField dostavaField;
 
+    public String FK_korisnik;
+    
     /**
      * Initializes the controller class.
      */
@@ -83,6 +85,7 @@ public class ListPostController implements Initializable {
         delivery.setCellValueFactory(new PropertyValueFactory<>("delivery"));
     }
 
+    
     private void loadData() {
         Baza handler = new Baza();
         
@@ -90,16 +93,14 @@ public class ListPostController implements Initializable {
         list = FXCollections.observableArrayList();
         try {
            
-            ResultSet rs = DB.select("SELECT * FROM addpost");
+            ResultSet rs = DB.select("SELECT * FROM paket");
             while (rs.next()) {
                         Integer id = rs.getInt("id");
-                        String name = rs.getString("nazivposiljke");
-                        String price = rs.getString("cijena");
                         String amount = rs.getString("kolicina");
                         String coupon = rs.getString("kupon");
                         String delivery = rs.getString("dostava");
                         
-                        list.add(new Post(id, name, price, amount, coupon, delivery));
+                        list.add(new Post(id, amount, coupon, delivery));
             }
             
         } catch (SQLException ex) {
@@ -114,8 +115,6 @@ public class ListPostController implements Initializable {
     @FXML
     private void odaberiPostu(MouseEvent event) {
         this.odabranaPosta = (Post) this.tableView.getSelectionModel().getSelectedItem();
-        this.nazivField.setText(this.odabranaPosta.getName());
-        this.cijenaField.setText(this.odabranaPosta.getPrice());
         this.kolicinaField.setText(this.odabranaPosta.getAmount());
         this.kuponField.setText(this.odabranaPosta.getCoupon());
         this.dostavaField.setText(this.odabranaPosta.getDelivery());
@@ -124,8 +123,6 @@ public class ListPostController implements Initializable {
     @FXML
     private void urediPosiljku(ActionEvent event) {
         
-        this.odabranaPosta.setName(this.nazivField.getText());
-        this.odabranaPosta.setPrice(this.cijenaField.getText());
         this.odabranaPosta.setAmount(this.kolicinaField.getText());
         this.odabranaPosta.setCoupon(this.kuponField.getText());
         this.odabranaPosta.setDelivery(this.dostavaField.getText());
@@ -150,16 +147,12 @@ public class ListPostController implements Initializable {
     
      public class Post{
         private SimpleIntegerProperty id;
-        private SimpleStringProperty name;
-        private SimpleStringProperty price;
         private SimpleStringProperty amount;
         private SimpleStringProperty coupon;
         private SimpleStringProperty delivery;
         
-        Post(Integer id,String name, String price, String amount, String coupon, String delivery){
+        Post(Integer id,String amount, String coupon, String delivery){
             this.id = new SimpleIntegerProperty(id);
-            this.name = new SimpleStringProperty(name);
-            this.price = new SimpleStringProperty(price);
             this.amount = new SimpleStringProperty(amount);
             this.coupon = new SimpleStringProperty(coupon);
             this.delivery = new SimpleStringProperty(delivery);
@@ -169,13 +162,7 @@ public class ListPostController implements Initializable {
             return id.get();
         }
 
-        public String getName() {
-            return name.get();
-        }
-
-        public String getPrice() {
-            return price.get();
-        }
+        
 
         public String getAmount() {
             return amount.get();
@@ -201,9 +188,7 @@ public class ListPostController implements Initializable {
         
         public void uredi () {
         try {
-        PreparedStatement upit = DB.exec("UPDATE addpost SET nazivposiljke=?,cijena=?, kolicina=?, kupon=?, dostava=? WHERE id=?");
-        upit.setString(1, this.getName());
-        upit.setString(2, this.getPrice());
+        PreparedStatement upit = DB.exec("UPDATE paket SET kolicina=?, kupon=?, dostava=? WHERE id=?");
         upit.setString(3, this.getAmount());
         upit.setString(4, this.getCoupon());
         upit.setString(5, this.getDelivery());
@@ -218,13 +203,6 @@ public class ListPostController implements Initializable {
             this.id = id;
         }
 
-        public void setName(String name) {
-            this.name = new SimpleStringProperty(name);
-        }
-
-        public void setPrice(String price) {
-            this.price =  new SimpleStringProperty(price);
-        }
 
         public void setAmount(String amount) {
             this.amount =  new SimpleStringProperty(amount);

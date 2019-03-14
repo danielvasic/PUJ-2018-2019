@@ -19,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import postRecord.model.Baza;
+import static postRecord.model.Baza.DB;
 /**
  * FXML Controller class
  *
@@ -44,6 +45,11 @@ public class AddPostController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    
+    LoginController info;
+    
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -64,21 +70,37 @@ public class AddPostController implements Initializable {
             alert.showAndWait();
             return;
         }
+         //Ovde sam pokušao dovući varijablu id iz korisnika kako bi mogao 
+         //spremiti poštu sa jedinstvenim id-om od prijavljenog korisnika
+        /* String id = null;
+            try {
+           
+                    ResultSet rs2 = DB.select("SELECT * FROM korisnik WHERE sifra =\'"+ info.getPassword() + "\' ");
+                    
+                    while (rs2.next()) {
+                        id = rs2.getString("id");
+                }
+            
+            } catch (SQLException ex) {
+                 System.out.println("Greška: " + ex.getMessage());
+            }*/    
      try {
             PreparedStatement stmnt = Baza.DB.konekcija.prepareStatement(
-                    "INSERT INTO paket VALUES (null, ?, ?, ?)",
+                    "INSERT INTO paket VALUES (null, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             );
             stmnt.setString(1, amount);
             stmnt.setString(2, coupon);
             stmnt.setString(3, shipping);
+            //Ovde bitrebao spremiti id od prijavljenog korisnika
+            stmnt.setString(4, id);
             stmnt.executeUpdate();
 
             ResultSet generatedKeys = stmnt.getGeneratedKeys();
             generatedKeys.next();
           
         } catch (SQLException e) {
-            System.out.println("Greska prilikom stvaranja korisnika u bazi:"
+            System.out.println("Greska prilikom stvaranja paketa u bazi:"
                     + e.getMessage());
         }
      
@@ -91,7 +113,7 @@ public class AddPostController implements Initializable {
             stmnt2.setString(2, price);
             stmnt2.executeUpdate();
     } catch (SQLException e) {
-            System.out.println("Greska prilikom stvaranja korisnika2 u bazi:"
+            System.out.println("Greska prilikom stvaranja proizvoda u bazi:"
                     + e.getMessage());
         }
     }
