@@ -20,7 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import postRecord.model.Baza;
 import static postRecord.model.Baza.DB;
-import postRecord.view.LogginController;
+import postRecord.view.LoginController;
 /**
  * FXML Controller class
  *
@@ -72,7 +72,7 @@ public class AddPostController implements Initializable {
             return;
         }
          //Ovdje samo dodati id korisnika koji je se postavio prilikom prijave
-         String id = String.valueof(LogginController.userid);
+         String id = String.valueOf(LoginController.userid);
             /*try {
            
                     ResultSet rs2 = DB.select("SELECT * FROM korisnik WHERE sifra =\'"+ info.getPassword() + "\' ");
