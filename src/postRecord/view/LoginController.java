@@ -25,7 +25,10 @@ import static postRecord.model.Baza.DB;
 
 
 public class LoginController implements Initializable {
-
+    
+   
+    public static int userid;
+   
     @FXML
     private JFXTextField username;
     @FXML
@@ -72,7 +75,7 @@ public class LoginController implements Initializable {
                     titleLabel.setText("Greška: Korisničko ime i lozinka nisu ispravni.");
                     titleLabel.setStyle("-fx-background-color:#d32f2f; -fx-text-fill:white");
                 } else {
-                    
+                    LoginController.userid = rs.getInt("1");
                     if("1".equals(role)){
                         closeStage();
                         loadAdmin();
