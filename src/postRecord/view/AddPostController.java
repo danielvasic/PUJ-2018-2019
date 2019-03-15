@@ -20,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import postRecord.model.Baza;
 import static postRecord.model.Baza.DB;
+import postRecord.view.LogginController;
 /**
  * FXML Controller class
  *
@@ -70,10 +71,9 @@ public class AddPostController implements Initializable {
             alert.showAndWait();
             return;
         }
-         //Ovde sam pokušao dovući varijablu id iz korisnika kako bi mogao 
-         //spremiti poštu sa jedinstvenim id-om od prijavljenog korisnika
-        /* String id = null;
-            try {
+         //Ovdje samo dodati id korisnika koji je se postavio prilikom prijave
+         String id = String.valueof(LogginController.userid);
+            /*try {
            
                     ResultSet rs2 = DB.select("SELECT * FROM korisnik WHERE sifra =\'"+ info.getPassword() + "\' ");
                     
