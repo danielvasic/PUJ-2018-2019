@@ -75,6 +75,7 @@ public class LoginController implements Initializable {
                     titleLabel.setText("Greška: Korisničko ime i lozinka nisu ispravni.");
                     titleLabel.setStyle("-fx-background-color:#d32f2f; -fx-text-fill:white");
                 } else {
+                    rs.first();
                     LoginController.userid = rs.getInt(1);
                     if("1".equals(role)){
                         closeStage();
